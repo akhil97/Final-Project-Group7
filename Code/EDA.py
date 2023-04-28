@@ -4,6 +4,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from imblearn.over_sampling import SMOTE
 from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+from sklearn_som.som import SOM
 
 from sklearn.model_selection import train_test_split
 from sklearn.decomposition import PCA
@@ -62,6 +65,7 @@ pca.fit(X_scaled)
 
 import matplotlib.pyplot as plt
 plt.plot(range(1,len(pca.explained_variance_ratio_)+1), pca.explained_variance_ratio_.cumsum())
+plt.title("Principal Component Analysis(PCA)")
 plt.xlabel('Number of Components')
 plt.ylabel('Explained Variance Ratio')
 plt.show()
@@ -78,6 +82,28 @@ sorted_var_dict = {k: v for k, v in sorted(var_dict.items(), key=lambda item: it
 # Print the sorted dictionary
 print(sorted_var_dict)
 
+data = df.iloc[:, 0:10]
+# Train a Self-Organizing Map using the Scikit-learn SOM class
+som = SOM(m=10, n=10, dim=2, max_iter=100)
+som.fit(data.values.reshape(-1, 2))
+# Use KMeans to cluster the data based on the SOM's output
+kmeans = KMeans(n_clusters=3)
+kmeans.fit(som.weights.reshape(-1, data.shape[1]))
+labels_pred = kmeans.predict(data)
+
+# Calculate the silhouette score to evaluate the clustering performance
+silhouette_avg = silhouette_score(data, labels_pred)
+print('Silhouette Score:', silhouette_avg)
+
+# Plot the SOM and class labels
+plt.figure(figsize=(10, 10))
+for i, (x, l) in enumerate(zip(data, Y)):
+    winner = som.predict(x)
+    plt.text(winner[0], winner[1], str(l), color=plt.cm.Set1(Y[i] / 10.), fontdict={'weight': 'bold', 'size': 11})
+plt.xticks(range(som.weights.shape[0]))
+plt.yticks(range(som.weights.shape[1]))
+plt.grid(True)
+plt.show()
 
 plt.hist(df['Cover_Type'], bins=7, edgecolor='black');
 plt.title('Before oversampling')
