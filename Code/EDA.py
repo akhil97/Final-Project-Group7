@@ -64,7 +64,6 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
 X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size = 0.30, random_state = 42)
-X_train, X_valid, y_train, y_valid = train_test_split(X_train, y_train, test_size = 0.25, random_state = 42)
 pca = PCA(n_components=40)
 pca.fit(X_scaled)
 
@@ -123,21 +122,22 @@ plt.hist(resampled_df['Cover_Type'], bins=7, edgecolor='black');
 plt.title('After oversampling')
 plt.show()
 
-x = resampled_df.drop(columns=['Soil_Type29', 'Soil_Type30', 'Soil_Type31', 'Soil_Type32', 'Soil_Type33', 'Soil_Type34', 'Soil_Type35', 'Soil_Type36', 'Soil_Type37', 'Soil_Type38', 'Soil_Type39', 'Soil_Type40'])
+categ = resampled_df.iloc[:, 10:]
+num = resampled_df.iloc[:, :10]
+
+le = LabelEncoder()
+for col in categ.columns:
+    resampled_df[col] = le.fit_transform(resampled_df[col])
+
+sc = StandardScaler()
+for col in num.columns:
+    resampled_df[col] = sc.fit_transform(resampled_df[col].values.reshape(-1, 1))
+
+x = resampled_df.drop(columns=['Cover_Type'])
 y = resampled_df[['Cover_Type']]
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.30, random_state=42)
 x_train, x_valid, y_train, y_valid = train_test_split(x_train, y_train, test_size = 0.25, random_state = 42)
-
-le = LabelEncoder()
-y_train = le.fit_transform(y_train)
-y_valid = le.fit_transform(y_valid)
-y_test = le.fit_transform(y_test)
-
-sc = StandardScaler()
-x_train = sc.fit_transform(x_train)
-x_valid = sc.fit_transform(x_valid)
-x_test = sc.fit_transform(x_test)
 
 rs = RandomForestClassifier()
 rs.fit(x_train, y_train)
@@ -199,7 +199,7 @@ print(classification_report(y_train, gnb_ypred_train))
 print("\n\n Testing Results:\n")
 print(classification_report(y_test, gnb_ypred_test))
 
-print("Naive Bayes Classifier Accuracy for testing data: ",accuracy_score(y_test, gnb_ypred_test))
+print("Naive Bayes Classifier Accuracy for testing data: ", accuracy_score(y_test, gnb_ypred_test))
 
 xgbc_ypred_test = xgbc.predict(x_test)
 
