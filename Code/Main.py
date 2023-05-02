@@ -23,7 +23,7 @@ from patsy import dmatrices
 import statsmodels.api as sm
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 from sklearn.linear_model import LogisticRegression
-import EDA as eda
+import EDA_forest_cover as eda
 import Feature_Engineering as FE
 import Preprocessing as pp
 import Baseline_model as bm
