@@ -28,7 +28,7 @@ import Feature_Engineering as FE
 import Preprocessing as pp
 import Baseline_model as bm
 import Feature_reduction_RFE as RFE
-import Smote_oversampling as SMOTE
+import Smote_oversampling as SMO
 import Split_data as tts
 import model_building as mb
 
@@ -130,7 +130,7 @@ x_train,y_train,x_cv,y_cv,x_test,y_test = tts.data_division(df)
 #######################SMOTE###########################
 
 #%%
-X_train_smote, Y_train_smote = SMOTE.Oversampling(x_train,y_train)
+X_train_smote, Y_train_smote = SMO.Oversampling(x_train,y_train)
 
 #################Random Forest Model##############################
 #%%
