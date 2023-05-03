@@ -35,7 +35,7 @@ import model_building as mb
 
 ##############################loading data####################
 # %%
-df = pd.read_csv('Covertype.csv')
+df = pd.read_csv('../Data/covtype.csv')
 
 df.head()
 
@@ -149,3 +149,18 @@ mb.best_random_forest_model(X_train_smote, Y_train_smote,x_train,y_train,x_cv,y_
 
 
 # %%
+
+#%%
+mb.xgboost_model_tuning_depth(X_train_smote, Y_train_smote, x_train, y_train, x_cv, y_cv, x_test, y_test)
+
+#%%
+
+#%%
+mb.xgboost_model_tuning_estimator(X_train_smote, Y_train_smote, x_train, y_train, x_cv, y_cv, x_test, y_test)
+
+#%%
+
+#%%
+mb.best_xgboost_model(X_train_smote, Y_train_smote, x_train, y_train, x_cv, y_cv, x_test, y_test)
+
+#%%
