@@ -149,6 +149,7 @@ mb.best_random_forest_model(X_train_smote, Y_train_smote,x_train,y_train,x_cv,y_
 
 
 # %%
+#################XGBoost Model##############################
 
 #%%
 mb.xgboost_model_tuning_depth(X_train_smote, Y_train_smote, x_train, y_train, x_cv, y_cv, x_test, y_test)
@@ -163,4 +164,14 @@ mb.xgboost_model_tuning_estimator(X_train_smote, Y_train_smote, x_train, y_train
 #%%
 mb.best_xgboost_model(X_train_smote, Y_train_smote, x_train, y_train, x_cv, y_cv, x_test, y_test)
 
+#%%
+
+#################MLP Classifier Model##############################
+
+#%%
+mb.MLPClassifier_with_grid_search(X_train_smote, Y_train_smote, x_train, y_train, x_cv, y_cv, x_test, y_test)
+#%%
+
+#%%
+mb.MLPClassifier_best_model(X_train_smote, Y_train_smote, x_train, y_train, x_cv, y_cv, x_test, y_test)
 #%%
